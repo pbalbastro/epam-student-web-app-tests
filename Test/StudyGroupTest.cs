@@ -73,11 +73,11 @@ namespace Test
             await _studyGroupPage.SetGroupName(groupName);
             await _studyGroupPage.SelectSubject(SubjectConstants.Physics);
             await _studyGroupPage.ClickCreateButton();
-            await _studyGroupPage.GetNotificationMessage();
+            await _studyGroupPage.SearchGroupName(groupName);
+            string[] createdAtText = await _studyGroupPage.GetColumnData("created-at");
 
-            string createdAtText = await Page.Locator($".study-group-row:has-text(\'{groupName}\') >> .created-at").InnerTextAsync();
             Assert.IsNotNull(createdAtText);
-            Assert.That(DateTime.TryParse(createdAtText, out _), Is.True, "Timestamp is not in valid date format");
+            Assert.That(DateTime.TryParse(createdAtText[0], out _), Is.True, "Timestamp is not in valid date format");
         }
 
         [Test]

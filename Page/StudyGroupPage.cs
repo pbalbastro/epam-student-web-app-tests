@@ -15,11 +15,8 @@ namespace Page
         private ILocator SubjectDropdown => _page.GetByRole(AriaRole.Combobox, new() { Name = "Subject" });
         private ILocator CreateButton => _page.GetByRole(AriaRole.Button, new() { Name = "Create" });
         private ILocator NotificationMessage => _page.Locator(".notification");
-
-        private ILocator JoinButton => _page.GetByRole(AriaRole.Button, new() { Name = "Join" });
-        private ILocator LeaveButton => _page.GetByRole(AriaRole.Button, new() { Name = "Leave" });
-
         private ILocator SortDropdown => _page.Locator("select.sort-dropdown");
+        private ILocator SearchInput => _page.Locator("input[name='search']");
 
         public async Task NavigateToAsync(string url)
         {
@@ -79,6 +76,12 @@ namespace Page
                 data[i] = await cells.Nth(i).InnerTextAsync();
             }
             return data;
+        }
+
+        public async Task SearchGroupName(string groupName)
+        {
+            await SearchInput.FillAsync(groupName);
+            await SearchInput.PressAsync("Enter");
         }
     }
 }
